@@ -9,10 +9,9 @@ test('emit', function (t) {
     
     var server = (function () {
         var ev = createEmitter();
-        var s = emitStream(ev);
         
         var server = net.createServer(function (stream) {
-            s.pipe(stream);
+            emitStream(ev).pipe(stream);
         });
         server.on('close', function () { ev.stop() });
         return server;
