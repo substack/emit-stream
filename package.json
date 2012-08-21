@@ -1,0 +1,38 @@
+{
+    "name" : "emit-stream",
+    "version" : "0.0.0",
+    "description" : "turn event emitters into streams and streams into event emitters",
+    "main" : "index.js",
+    "bin" : {},
+    "directories" : {
+        "example" : "example",
+        "test" : "test"
+    },
+    "dependencies" : {
+        "JSONStream" : "~0.3.1"
+    },
+    "devDependencies" : {
+        "tap" : "~0.3.0"
+    },
+    "scripts" : {
+        "test" : "tap test/*.js"
+    },
+    "repository" : {
+        "type" : "git",
+        "url" : "git://github.com/substack/emit-stream.git"
+    },
+    "homepage" : "https://github.com/substack/emit-stream",
+    "keywords" : [
+        "emit",
+        "event",
+        "emitter",
+        "EventEmitter",
+        "stream"
+    ],
+    "author" : {
+        "name" : "James Halliday",
+        "email" : "mail@substack.net",
+        "url" : "http://substack.net"
+    },
+    "license" : "MIT"
+}
