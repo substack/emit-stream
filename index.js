@@ -11,13 +11,27 @@ exports = module.exports = function (ev) {
 exports.toStream = function (ev) {
     var s = JSONStream.stringify();
     
-    var emit = ev.emit;
-    ev.emit = function () {
-        if (s.writable) {
-            var args = [].slice.call(arguments);
-            s.write(args);
-        }
-        emit.apply(ev, arguments);
+    if (!ev._emitStreams) {
+        ev._emitStreams = [];
+        
+        var emit = ev.emit;
+        ev.emit = function () {
+            if (s.writable) {
+                var args = [].slice.call(arguments);
+                ev._emitStreams.forEach(function (es) {
+                    es.write(args);
+                });
+            }
+            emit.apply(ev, arguments);
+        };
+    }
+    ev._emitStreams.push(s);
+    
+    var end = s.end;
+    s.end = function () {
+        var ix = ev._emitStreams.indexOf(s);
+        ev._emitStreams.splice(ix, 1);
+        end.apply(s, arguments);
     };
     
     return s;
