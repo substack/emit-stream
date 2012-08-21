@@ -8,9 +8,10 @@ test('emit', function (t) {
     t.plan(1);
     
     var server = (function () {
-        var ev = createEmitter();
+        var ev;
         
         var server = net.createServer(function (stream) {
+            if (!ev) ev = createEmitter();
             emitStream(ev).pipe(stream);
         });
         server.on('close', function () { ev.stop() });
@@ -39,7 +40,7 @@ test('emit', function (t) {
                 8, 9, 10, 11, 'ping',
             ]);
             stream.end();
-        }, 310);
+        }, 320);
     });
     
     t.on('end', function () {
