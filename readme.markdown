@@ -2,6 +2,8 @@
 
 turn event emitters into streams and streams into event emitters
 
+[![build status](https://secure.travis-ci.org/substack/emit-stream.png)](http://travis-ci.org/substack/emit-stream)
+
 # example
 
 write a server that streams an event emitter's events to clients:
