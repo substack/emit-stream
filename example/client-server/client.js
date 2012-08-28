@@ -1,7 +1,10 @@
 var emitStream = require('../../');
+var JSONStream = require('JSONStream');
 var net = require('net');
 
-var stream = net.connect(5555);
+var stream = net.connect(5555)
+    .pipe(JSONStream.parse([true]))
+;
 var ev = emitStream(stream);
 
 ev.on('ping', function (t) {

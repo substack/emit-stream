@@ -1,4 +1,5 @@
 var emitStream = require('../../');
+var JSONStream = require('JSONStream');
 var EventEmitter = require('events').EventEmitter;
 var net = require('net');
 
@@ -6,7 +7,10 @@ var server = (function () {
     var ev = createEmitter();
     
     return net.createServer(function (stream) {
-        emitStream(ev).pipe(stream);
+        emitStream(ev)
+            .pipe(JSONStream.stringify())
+            .pipe(stream)
+        ;
     });
 })();
 server.listen(5555);
