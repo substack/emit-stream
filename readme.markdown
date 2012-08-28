@@ -10,17 +10,22 @@ write a server that streams an event emitter's events to clients:
 
 ``` js
 var emitStream = require('emit-stream');
-var EventEmitter = require('events').EventEmitter;
+var JSONStream = require('JSONStream');
 var net = require('net');
 
 var server = (function () {
     var ev = createEmitter();
     
     return net.createServer(function (stream) {
-        emitStream(ev).pipe(stream);
+        emitStream(ev)
+            .pipe(JSONStream.stringify())
+            .pipe(stream)
+        ;
     });
 })();
 server.listen(5555);
+
+var EventEmitter = require('events').EventEmitter;
 
 function createEmitter () {
     var ev = new EventEmitter;
@@ -43,7 +48,9 @@ then re-constitute the event-emitters on the client:
 var emitStream = require('event-stream');
 var net = require('net');
 
-var stream = net.connect(5555);
+var stream = net.connect(5555)
+    .pipe(JSONStream.parse([true]))
+;
 var ev = emitStream(stream);
 
 ev.on('ping', function (t) {
@@ -53,6 +60,20 @@ ev.on('ping', function (t) {
 ev.on('x', function (x) {
     console.log('x = ' + x);
 });
+```
+
+***
+
+```
+$ node example/emit.js 
+x = 0
+x = 1
+x = 2
+x = 3
+# ping: 1346116850523
+x = 4
+x = 5
+^C
 ```
 
 # methods
@@ -71,16 +92,17 @@ Otherwise returns a stream from `emit.fromStream(x)`.
 
 Return a stream from the EventEmitter `emitter`.
 
-The arguments are serialized with
-[JSONStream](http://github.com/dominictarr/JSONStream).
+The `'data'` emitted by this stream will be array data.
+Serialization is up to you. I recommend
+[JSONStream](http://github.com/dominictarr/JSONStream)
+for most purposes.
 
 ## emitStream.fromStream(stream)
 
 Return an EventEmitter from `stream`.
 
-The `stream` is parsed with
-[JSONStream](http://github.com/dominictarr/JSONStream)
-to re-create the event emitter arguments.
+The `'data'` written to this stream should be an array, like
+[JSONStream](http://github.com/dominictarr/JSONStream) creates.
 
 # install
 
