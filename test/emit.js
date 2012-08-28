@@ -3,6 +3,7 @@ var test = require('tap').test;
 var emitStream = require('../');
 var EventEmitter = require('events').EventEmitter;
 var net = require('net');
+var JSONStream = require('JSONStream');
 
 test('emit', function (t) {
     t.plan(1);
@@ -12,7 +13,9 @@ test('emit', function (t) {
         
         var server = net.createServer(function (stream) {
             if (!ev) ev = createEmitter();
-            emitStream(ev).pipe(stream);
+            var s = JSONStream.stringify();
+            s.pipe(stream);
+            emitStream(ev).pipe(s);
         });
         server.on('close', function () { ev.stop() });
         return server;
@@ -23,7 +26,7 @@ test('emit', function (t) {
     
     server.on('listening', function () {
         var stream = net.connect(5555);
-        var ev = emitStream(stream);
+        var ev = emitStream(stream.pipe(JSONStream.parse([true])));
         
         ev.on('ping', function (t) {
             collected.push('ping');
