@@ -45,7 +45,7 @@ function createEmitter () {
 then re-constitute the event-emitters on the client:
 
 ``` js
-var emitStream = require('event-stream');
+var emitStream = require('emit-stream');
 var net = require('net');
 
 var stream = net.connect(5555)
