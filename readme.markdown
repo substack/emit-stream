@@ -4,6 +4,8 @@ turn event emitters into streams and streams into event emitters
 
 [![build status](https://secure.travis-ci.org/substack/emit-stream.png)](http://travis-ci.org/substack/emit-stream)
 
+![emit stream explained](http://substack.net/images/emit_stream.gif)
+
 # example
 
 write a server that streams an event emitter's events to clients:
@@ -87,8 +89,6 @@ var emitStream = require('emit-stream')
 If `x` is a stream, returns an event emitter from `emit.toStream(x)`.
 
 Otherwise returns a stream from `emit.fromStream(x)`.
-
-![emit stream explained](http://substack.net/images/emit_stream.gif)
 
 ## emitStream.toStream(emitter)
 
