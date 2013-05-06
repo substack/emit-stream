@@ -79,7 +79,7 @@ function createEmitter () {
 }
 
 
-test('emit to multiple listeners', function(t) {
+test('emit to multiple listeners, close first', function(t) {
     t.plan(2);
 
     var duration = 50, events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
