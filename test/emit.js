@@ -14,7 +14,7 @@ function JSONStreamServer(createEmitter) {
         s.pipe(stream);
         emitStream(ev).pipe(s);
     });
-    server.on('close', function () { ev.end() });
+    server.on('close', function () { ev.stop && ev.stop() });
     return server;
 }
 
