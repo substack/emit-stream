@@ -5,21 +5,24 @@ var EventEmitter = require('events').EventEmitter;
 var net = require('net');
 var JSONStream = require('JSONStream');
 
+function JSONStreamServer(createEmitter) {
+    var ev;
+
+    var server = net.createServer(function (stream) {
+        if (!ev) ev = createEmitter();
+        var s = JSONStream.stringify();
+        s.pipe(stream);
+        emitStream(ev).pipe(s);
+    });
+    server.on('close', function () { ev.end() });
+    return server;
+}
+
+
 test('emit', function (t) {
     t.plan(1);
 
-    var server = (function () {
-        var ev;
-
-        var server = net.createServer(function (stream) {
-            if (!ev) ev = createEmitter();
-            var s = JSONStream.stringify();
-            s.pipe(stream);
-            emitStream(ev).pipe(s);
-        });
-        server.on('close', function () { ev.stop() });
-        return server;
-    })();
+    var server = JSONStreamServer(createEmitter);
     server.listen(5555);
 
     var collected = [];
