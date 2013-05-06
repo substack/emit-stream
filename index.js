@@ -24,12 +24,10 @@ exports.toStream = function (ev) {
 
         var emit = ev.emit;
         ev.emit = function () {
-            if (s.writable) {
-                var args = [].slice.call(arguments);
-                ev._emitStreams.forEach(function (es) {
-                    es.write(args);
-                });
-            }
+            var args = [].slice.call(arguments);
+            ev._emitStreams.forEach(function (es) {
+                es.writable && es.write(args);
+            });
             emit.apply(ev, arguments);
         };
     }
