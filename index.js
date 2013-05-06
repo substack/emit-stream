@@ -18,10 +18,10 @@ exports.toStream = function (ev) {
             ev._emitStreams.splice(ix, 1);
         }
     );
-    
+
     if (!ev._emitStreams) {
         ev._emitStreams = [];
-        
+
         var emit = ev.emit;
         ev.emit = function () {
             if (s.writable) {
@@ -34,16 +34,16 @@ exports.toStream = function (ev) {
         };
     }
     ev._emitStreams.push(s);
-    
+
     return s;
 };
 
 exports.fromStream = function (s) {
     var ev = new EventEmitter;
-    
+
     s.pipe(through(function (args) {
         ev.emit.apply(ev, args);
     }));
-    
+
     return ev;
 };

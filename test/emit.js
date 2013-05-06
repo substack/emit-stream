@@ -7,10 +7,10 @@ var JSONStream = require('JSONStream');
 
 test('emit', function (t) {
     t.plan(1);
-    
+
     var server = (function () {
         var ev;
-        
+
         var server = net.createServer(function (stream) {
             if (!ev) ev = createEmitter();
             var s = JSONStream.stringify();
@@ -21,21 +21,21 @@ test('emit', function (t) {
         return server;
     })();
     server.listen(5555);
-    
+
     var collected = [];
-    
+
     server.on('listening', function () {
         var stream = net.connect(5555);
         var ev = emitStream(stream.pipe(JSONStream.parse([true])));
-        
+
         ev.on('ping', function (t) {
             collected.push('ping');
         });
-        
+
         ev.on('x', function (x) {
             collected.push(x);
         });
-        
+
         setTimeout(function () {
             t.same(collected, [
                 0, 1, 2, 3, 'ping',
@@ -45,7 +45,7 @@ test('emit', function (t) {
             stream.end();
         }, 320);
     });
-    
+
     t.on('end', function () {
         server.close();
     });
@@ -57,17 +57,17 @@ function createEmitter () {
     ev.stop = function () {
         intervals.forEach(function (iv) { clearInterval(iv) });
     };
-    
+
     setTimeout(function () {
         intervals.push(setInterval(function () {
             ev.emit('ping', Date.now());
         }, 100));
     }, 5);
-    
+
     var x = 0;
     intervals.push(setInterval(function () {
         ev.emit('x', x ++);
     }, 25));
-    
+
     return ev;
 }
