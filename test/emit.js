@@ -10,11 +10,14 @@ function JSONStreamServer(createEmitter) {
 
     var server = net.createServer(function (stream) {
         if (!ev) ev = createEmitter();
-        var s = JSONStream.stringify();
-        s.pipe(stream);
-        emitStream(ev).pipe(s);
+        var es = emitStream(ev);
+
+        es.pipe(JSONStream.stringify()).pipe(stream);
+
+        stream.on('end', function() { es.end(); });
     });
     server.on('close', function () { ev.stop && ev.stop() });
+
     return server;
 }
 
