@@ -1,6 +1,6 @@
 {
     "name" : "emit-stream",
-    "version" : "0.1.0",
+    "version" : "0.1.1",
     "description" : "turn event emitters into streams and streams into event emitters",
     "main" : "index.js",
     "directories" : {
