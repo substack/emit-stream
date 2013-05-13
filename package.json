@@ -8,11 +8,11 @@
         "test" : "test"
     },
     "dependencies" : {
-        "through" : "~0.1.4"
+        "through" : "~0.3.4"
     },
     "devDependencies" : {
-        "tap" : "~0.3.0",
-        "JSONStream" : "~0.3.1"
+        "tap" : "~0.4.2",
+        "JSONStream" : "~0.6.4"
     },
     "scripts" : {
         "test" : "tap test/*.js"
