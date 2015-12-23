@@ -1,5 +1,5 @@
 var EventEmitter = require('events').EventEmitter;
-var through = require('through');
+var through2 = require('through2');
 
 exports = module.exports = function (ev) {
     if (typeof ev.pipe === 'function') {
@@ -9,7 +9,7 @@ exports = module.exports = function (ev) {
 };
 
 exports.toStream = function (ev) {
-    var s = through(
+    var s = through2({ objectMode: true },
         function write (args) {
             this.emit('data', args);
         },
@@ -18,10 +18,10 @@ exports.toStream = function (ev) {
             ev._emitStreams.splice(ix, 1);
         }
     );
-    
+
     if (!ev._emitStreams) {
         ev._emitStreams = [];
-        
+
         var emit = ev.emit;
         ev.emit = function () {
             var args = [].slice.call(arguments);
@@ -32,16 +32,16 @@ exports.toStream = function (ev) {
         };
     }
     ev._emitStreams.push(s);
-    
+
     return s;
 };
 
 exports.fromStream = function (s) {
     var ev = new EventEmitter;
-    
-    s.pipe(through(function (args) {
+
+    s.pipe(through2({ objectMode: true }, function (args) {
         ev.emit.apply(ev, args);
     }));
-    
+
     return ev;
 };
