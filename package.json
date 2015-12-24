@@ -11,8 +11,8 @@
     "through2": "^2.0.0"
   },
   "devDependencies": {
-    "tap": "~0.4.2",
-    "JSONStream": "~0.6.4"
+    "JSONStream": "^1.0.7",
+    "tap": "^2.3.4"
   },
   "scripts": {
     "test": "tap test/*.js"
