@@ -34,5 +34,11 @@
     "email": "mail@substack.net",
     "url": "http://substack.net"
   },
+  "contributors": [
+    {
+      "name": "Dario Andrei",
+      "email": "wouldgo84@gmail.com"
+    }
+  ],
   "license": "MIT"
 }
